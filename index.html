@@ -963,12 +963,15 @@
         }
         
         .stat-value {
-            font-size: 2rem;
+            font-size: clamp(1.1rem, 4vw, 2rem);
             font-weight: 800;
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-primary);
             line-height: 1.1;
             letter-spacing: -0.02em;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
         }
         
         .stat-card.warning .stat-value { color: var(--warning-color); }
@@ -1358,6 +1361,22 @@
         .mini-badge.match { background: var(--success-bg); color: var(--success-color); }
         .mini-badge.mismatch { background: var(--warning-bg); color: var(--warning-color); }
         .mini-badge.missing { background: var(--error-bg); color: var(--error-color); }
+        .mini-badge.duplicate { background: var(--error-bg); color: var(--error-color); }
+        .mini-badge.misattribution { background: var(--purple-bg); color: var(--purple-color); }
+        
+        /* Row highlighting for special statuses */
+        tr.duplicate {
+            background: rgba(239, 68, 68, 0.08) !important;
+        }
+        tr.duplicate:hover {
+            background: rgba(239, 68, 68, 0.15) !important;
+        }
+        tr.misattribution {
+            background: rgba(139, 92, 246, 0.08) !important;
+        }
+        tr.misattribution:hover {
+            background: rgba(139, 92, 246, 0.15) !important;
+        }
 
         /* ===== VALIDATION ===== */
         .validation-list {
@@ -2590,6 +2609,78 @@
             <div class="page-content">
                 <!-- Instructions Page -->
                 <section class="page-section active" id="page-instructions">
+                    <!-- Hero Section -->
+                    <div class="instruction-hero" style="background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; margin-bottom: 2rem; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: radial-gradient(circle, var(--accent-glow), transparent 70%); opacity: 0.3;"></div>
+                        <div style="position: relative; z-index: 1;">
+                            <h2 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">QB Reconciler Pro</h2>
+                            <p style="color: var(--text-secondary); font-size: 1rem; max-width: 600px;">Automated payroll-to-QuickBooks reconciliation with intelligent matching, discrepancy detection, and comprehensive reporting.</p>
+                            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--success-bg); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--success-color);">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    100% Local Processing
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--info-bg); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--info-color);">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    Instant Results
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--purple-bg); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--purple-color);">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                    Bank-Level Security
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Overview -->
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #10b981, #06d6a0);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Workflow Overview</div>
+                                    <div class="card-subtitle">The complete reconciliation process in 5 steps</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; align-items: flex-start; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem; min-width: 120px;">
+                                    <div style="width: 50px; height: 50px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem;">1</div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">Prepare</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Export files from<br>FOCUS & QB</div>
+                                </div>
+                                <svg width="24" height="24" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" style="margin-top: 1.5rem; flex-shrink: 0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem; min-width: 120px;">
+                                    <div style="width: 50px; height: 50px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem;">2</div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">Upload</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Drop or select<br>your files</div>
+                                </div>
+                                <svg width="24" height="24" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" style="margin-top: 1.5rem; flex-shrink: 0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem; min-width: 120px;">
+                                    <div style="width: 50px; height: 50px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem;">3</div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">Validate</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Verify format<br>& structure</div>
+                                </div>
+                                <svg width="24" height="24" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" style="margin-top: 1.5rem; flex-shrink: 0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem; min-width: 120px;">
+                                    <div style="width: 50px; height: 50px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem;">4</div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">Reconcile</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Run intelligent<br>matching</div>
+                                </div>
+                                <svg width="24" height="24" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" style="margin-top: 1.5rem; flex-shrink: 0;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem; min-width: 120px;">
+                                    <div style="width: 50px; height: 50px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem;">5</div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">Analyze</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Review & export<br>results</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Requirements -->
                     <div class="instructions-grid">
                         <!-- Payroll Data Instructions -->
                         <div class="instruction-card">
@@ -2659,7 +2750,7 @@
                         <div class="instruction-card">
                             <div class="instruction-header">
                                 <div class="instruction-number">3</div>
-                                <div class="instruction-title">Name Mapping File (Optional)</div>
+                                <div class="instruction-title">Name Mapping File <span style="color: var(--error-color); font-size: 0.75rem;">(Required)</span></div>
                             </div>
                             <div class="instruction-body">
                                 <p class="text-muted mb-2">CSV or Excel file to map contractor names to business names</p>
@@ -2693,16 +2784,480 @@
                             </div>
                             <div class="instruction-body">
                                 <ol style="padding-left: 1.25rem; color: var(--text-secondary); font-size: 0.9rem;">
-                                    <li style="margin-bottom: 0.75rem;">Upload your Payroll and QB data files</li>
-                                    <li style="margin-bottom: 0.75rem;">Optionally add a name mapping file</li>
-                                    <li style="margin-bottom: 0.75rem;">Click <strong>"Validate"</strong> to check file formats</li>
-                                    <li style="margin-bottom: 0.75rem;">Click <strong>"Run Reconciliation"</strong></li>
+                                    <li style="margin-bottom: 0.75rem;">Upload your <strong>Payroll Data</strong> file</li>
+                                    <li style="margin-bottom: 0.75rem;">Upload your <strong>QuickBooks Data</strong> file</li>
+                                    <li style="margin-bottom: 0.75rem;">Upload your <strong>Name Mapping</strong> file</li>
+                                    <li style="margin-bottom: 0.75rem;">Files auto-validate → auto-reconcile → results appear!</li>
                                     <li>Review discrepancies in the Dashboard</li>
                                 </ol>
                                 
                                 <div class="callout info mt-2">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <p>All data is processed locally in your browser. Nothing is uploaded to any server.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matching Algorithm -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Intelligent Matching Algorithm</div>
+                                    <div class="card-subtitle">How reconciliation works under the hood</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color);">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                        <div style="width: 36px; height: 36px; background: var(--info-bg); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--info-color);">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                        </div>
+                                        <div style="font-weight: 600;">Step 1: Name Matching</div>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                                        Providers are matched by comparing <strong>Provider Name</strong> (Payroll) with <strong>Contractor Name</strong> or <strong>Business Name</strong> (QB). The mapping file enables custom aliases for names that differ between systems.
+                                    </p>
+                                </div>
+                                
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color);">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                        <div style="width: 36px; height: 36px; background: var(--warning-bg); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--warning-color);">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        </div>
+                                        <div style="font-weight: 600;">Step 2: Date Correlation</div>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                                        Payroll dates are extracted from <strong>Source.Name</strong> filenames. The system expects QB payments to occur <strong>~7 days later</strong>. A <strong>±3 day tolerance</strong> accounts for weekends and processing delays.
+                                    </p>
+                                </div>
+                                
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color);">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                        <div style="width: 36px; height: 36px; background: var(--success-bg); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--success-color);">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        </div>
+                                        <div style="font-weight: 600;">Step 3: Amount Verification</div>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                                        Once matched by name and date, <strong>Provider Payment</strong> (Payroll) is compared to <strong>Paid Amount</strong> (QB). Differences greater than <strong>$0.01</strong> are flagged as discrepancies for review.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Understanding Results -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Understanding Your Results</div>
+                                    <div class="card-subtitle">Status indicators and what they mean</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                                <!-- Match Status -->
+                                <div style="display: flex; gap: 1rem; padding: 1rem; background: var(--success-bg); border-radius: var(--radius-lg); border: 1px solid var(--success-color); border-opacity: 0.3;">
+                                    <div style="flex-shrink: 0;">
+                                        <div style="width: 44px; height: 44px; background: var(--success-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700;">✓</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--success-color); margin-bottom: 0.25rem;">MATCH</div>
+                                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                                            Payment amounts match within $0.01. Provider found in both Payroll and QuickBooks with matching date windows.
+                                        </p>
+                                        <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                                            <strong>Action:</strong> No action needed
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mismatch Status -->
+                                <div style="display: flex; gap: 1rem; padding: 1rem; background: var(--warning-bg); border-radius: var(--radius-lg); border: 1px solid var(--warning-color); border-opacity: 0.3;">
+                                    <div style="flex-shrink: 0;">
+                                        <div style="width: 44px; height: 44px; background: var(--warning-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700;">⚠</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--warning-color); margin-bottom: 0.25rem;">MISMATCH</div>
+                                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                                            Provider found in both systems but amounts differ. Could indicate partial payment, adjustment, or data entry error.
+                                        </p>
+                                        <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                                            <strong>Action:</strong> Investigate difference in Detailed View
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Missing in QB -->
+                                <div style="display: flex; gap: 1rem; padding: 1rem; background: var(--error-bg); border-radius: var(--radius-lg); border: 1px solid var(--error-color); border-opacity: 0.3;">
+                                    <div style="flex-shrink: 0;">
+                                        <div style="width: 44px; height: 44px; background: var(--error-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700;">✗</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--error-color); margin-bottom: 0.25rem;">MISSING IN QB</div>
+                                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                                            Provider has payroll records but no matching QB payment found. Payment may be pending or missed.
+                                        </p>
+                                        <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                                            <strong>Action:</strong> Verify payment was issued in QB
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Missing in Payroll -->
+                                <div style="display: flex; gap: 1rem; padding: 1rem; background: var(--info-bg); border-radius: var(--radius-lg); border: 1px solid var(--info-color); border-opacity: 0.3;">
+                                    <div style="flex-shrink: 0;">
+                                        <div style="width: 44px; height: 44px; background: var(--info-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700;">?</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--info-color); margin-bottom: 0.25rem;">MISSING IN PAYROLL</div>
+                                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                                            QB payment exists without matching payroll record. Could be manual payment, correction, or duplicate.
+                                        </p>
+                                        <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                                            <strong>Action:</strong> Verify if payment was authorized
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Guide -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Dashboard Guide</div>
+                                    <div class="card-subtitle">Navigating your reconciliation results</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem;">
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border-left: 4px solid var(--warning-color);">
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--warning-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        Stats Cards
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                                        Overview metrics showing total discrepancies, mismatches, missing records, and net dollar variance at a glance.
+                                    </p>
+                                </div>
+                                
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border-left: 4px solid var(--purple-color);">
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--purple-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
+                                        Distribution Chart
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                                        Doughnut chart showing breakdown of discrepancy types: mismatches vs. missing in QB vs. missing in payroll.
+                                    </p>
+                                </div>
+                                
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border-left: 4px solid var(--info-color);">
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--info-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                        Top 10 Chart
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                                        Horizontal bar chart ranking providers by discrepancy amount. Focus resolution efforts on largest variances first.
+                                    </p>
+                                </div>
+                                
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 1.25rem; border-left: 4px solid var(--success-color);">
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--success-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                        Insights Panel
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                                        AI-driven recommendations: largest discrepancy, priority focus area, and "quick wins" (issues under $100).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed View Guide -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Detailed View Guide</div>
+                                    <div class="card-subtitle">Deep dive into provider-level data</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                                <div>
+                                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="20" height="20" fill="none" stroke="var(--accent-primary)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                                        Main Table Features
+                                    </h4>
+                                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Search:</strong> Filter providers by name in real-time</span>
+                                        </li>
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Filter:</strong> Show All, Mismatches Only, or Missing Only</span>
+                                        </li>
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Sort:</strong> Click column headers to sort by Name, Payroll, QB, or Difference</span>
+                                        </li>
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Expand:</strong> Click any row to see weekly payment breakdown</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="20" height="20" fill="none" stroke="var(--accent-primary)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        Weekly Comparison Table
+                                    </h4>
+                                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Date Sorted:</strong> All payments shown in chronological order</span>
+                                        </li>
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Source.Name:</strong> Shows which payroll file each payment came from</span>
+                                        </li>
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Expected QB:</strong> Calculated date (payroll date + 7 days)</span>
+                                        </li>
+                                        <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                            <span style="color: var(--accent-primary); font-weight: 700;">▸</span>
+                                            <span><strong>Diff Column:</strong> Shows exact variance for each payment pair</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="callout info mt-3">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                                <p><strong>Pro Tip:</strong> Unmatched QB payments now appear in date order with payroll records, making it easier to spot patterns like duplicate payments or timing issues.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Options -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Export Options</div>
+                                    <div class="card-subtitle">Save and share your results</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #34d399); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                        <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem;">Excel Export</div>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Full report with Summary and Provider sheets, formatted and ready for sharing</p>
+                                </div>
+                                
+                                <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                        <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem;">CSV Export</div>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Simple format for importing into other systems or spreadsheets</p>
+                                </div>
+                                
+                                <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                        <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem;">Print Report</div>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Print-optimized view for physical records or PDF generation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Troubleshooting -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Troubleshooting Guide</div>
+                                    <div class="card-subtitle">Common issues and solutions</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <!-- Issue 1 -->
+                                <details style="background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden;">
+                                    <summary style="padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; user-select: none;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--error-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        "Sheet not found" error
+                                    </summary>
+                                    <div style="padding: 0 1.25rem 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <p style="margin-bottom: 0.75rem;"><strong>Cause:</strong> The sheet name in your file doesn't match the expected name.</p>
+                                        <p style="margin-bottom: 0.75rem;"><strong>Solution:</strong></p>
+                                        <ol style="padding-left: 1.5rem; margin: 0;">
+                                            <li>Check that your Payroll file has a sheet named exactly <code>Payroll Data</code></li>
+                                            <li>Check that your QB file has a sheet named exactly <code>QB Data</code></li>
+                                            <li>Or use the custom sheet name fields on the Upload page to specify different names</li>
+                                        </ol>
+                                    </div>
+                                </details>
+                                
+                                <!-- Issue 2 -->
+                                <details style="background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden;">
+                                    <summary style="padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; user-select: none;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--warning-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        Many providers showing as "Missing"
+                                    </summary>
+                                    <div style="padding: 0 1.25rem 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <p style="margin-bottom: 0.75rem;"><strong>Cause:</strong> Names in Payroll don't match names in QuickBooks.</p>
+                                        <p style="margin-bottom: 0.75rem;"><strong>Solution:</strong></p>
+                                        <ol style="padding-left: 1.5rem; margin: 0;">
+                                            <li>Create a Name Mapping file with two columns: <code>Contractor Name</code> and <code>Business Name</code></li>
+                                            <li>Add entries mapping Payroll names to their QB equivalents</li>
+                                            <li>Upload the mapping file and re-run reconciliation</li>
+                                        </ol>
+                                    </div>
+                                </details>
+                                
+                                <!-- Issue 3 -->
+                                <details style="background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden;">
+                                    <summary style="padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; user-select: none;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--info-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        Dates not matching correctly
+                                    </summary>
+                                    <div style="padding: 0 1.25rem 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <p style="margin-bottom: 0.75rem;"><strong>Cause:</strong> Source.Name doesn't contain a recognizable date format.</p>
+                                        <p style="margin-bottom: 0.75rem;"><strong>Solution:</strong></p>
+                                        <ol style="padding-left: 1.5rem; margin: 0;">
+                                            <li>Ensure Source.Name contains date in format: <code>MM.DD.YY</code> or <code>MM-DD-YY</code></li>
+                                            <li>Example: <code>Payroll Workbook 06.06.25.xlsm</code></li>
+                                            <li>The system extracts the date and adds 7 days to find expected QB payment date</li>
+                                        </ol>
+                                    </div>
+                                </details>
+                                
+                                <!-- Issue 4 -->
+                                <details style="background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden;">
+                                    <summary style="padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; user-select: none;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--purple-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        Amount shows as $0.00 or NaN
+                                    </summary>
+                                    <div style="padding: 0 1.25rem 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <p style="margin-bottom: 0.75rem;"><strong>Cause:</strong> Amount columns contain text or special characters.</p>
+                                        <p style="margin-bottom: 0.75rem;"><strong>Solution:</strong></p>
+                                        <ol style="padding-left: 1.5rem; margin: 0;">
+                                            <li>Ensure Provider Payment (Column N) contains numeric values only</li>
+                                            <li>Remove currency symbols ($) and commas from the source data</li>
+                                            <li>Check for hidden characters or spaces in cells</li>
+                                        </ol>
+                                    </div>
+                                </details>
+                                
+                                <!-- Issue 5 -->
+                                <details style="background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden;">
+                                    <summary style="padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.75rem; user-select: none;">
+                                        <svg width="18" height="18" fill="none" stroke="var(--success-color)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                        Browser becomes slow or unresponsive
+                                    </summary>
+                                    <div style="padding: 0 1.25rem 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+                                        <p style="margin-bottom: 0.75rem;"><strong>Cause:</strong> Very large files with thousands of rows.</p>
+                                        <p style="margin-bottom: 0.75rem;"><strong>Solution:</strong></p>
+                                        <ol style="padding-left: 1.5rem; margin: 0;">
+                                            <li>Filter your source data to include only the relevant date range</li>
+                                            <li>Close other browser tabs to free up memory</li>
+                                            <li>Use Chrome or Edge for best performance</li>
+                                            <li>Consider splitting data into monthly chunks</li>
+                                        </ol>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keyboard Shortcuts -->
+                    <div class="card" style="margin-top: 2rem; margin-bottom: 2rem;">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title">Keyboard Shortcuts</div>
+                                    <div class="card-subtitle">Power user navigation</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">⌘/Ctrl + K</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Command Palette</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">⌘/Ctrl + U</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Upload Files</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">⌘/Ctrl + R</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Run Reconciliation</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">⌘/Ctrl + D</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Dashboard</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">⌘/Ctrl + E</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Export Reports</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">?</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Help & Shortcuts</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">Esc</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Close Modal</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <kbd style="padding: 0.35rem 0.6rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; box-shadow: 0 2px 0 var(--border-color);">T</kbd>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Toggle Theme</span>
                                 </div>
                             </div>
                         </div>
@@ -2755,7 +3310,7 @@
                                         <div class="upload-icon">
                                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                                         </div>
-                                        <div class="upload-title">Name Mapping File (Optional)</div>
+                                        <div class="upload-title">Name Mapping File <span style="color: var(--error-color);">*</span></div>
                                         <div class="upload-subtitle">Drop file here or <strong>click to browse</strong></div>
                                     </div>
                                     <div class="upload-filename" id="mappingFileName" style="display: none;"></div>
@@ -3695,7 +4250,18 @@
         function checkFilesReady() {
             const hasPayroll = payrollFileInput.files[0];
             const hasQB = qbFileInput.files[0];
-            validateBtn.disabled = !(hasPayroll && hasQB);
+            const hasMapping = mappingFileInput.files[0];
+            
+            // All 3 files required for validation
+            validateBtn.disabled = !(hasPayroll && hasQB && hasMapping);
+            
+            // Auto-validate when ALL THREE files are uploaded
+            if (hasPayroll && hasQB && hasMapping) {
+                // Small delay to let the UI update
+                setTimeout(() => {
+                    validateFiles(true); // Pass true for auto-validation mode
+                }, 300);
+            }
         }
 
         // ===== LOGGING =====
@@ -3769,9 +4335,9 @@
             `;
         }
 
-        validateBtn.addEventListener('click', validateFiles);
+        validateBtn.addEventListener('click', () => validateFiles(false));
         
-        async function validateFiles() {
+        async function validateFiles(autoMode = false) {
             const resultsDiv = document.getElementById('validationResults');
             resultsDiv.innerHTML = '<div style="text-align: center; padding: 2rem;"><div class="spinner" style="width: 32px; height: 32px; border-width: 3px; margin: 0 auto;"></div><p class="text-muted mt-2">Validating files...</p></div>';
             
@@ -3835,8 +4401,11 @@
                     qbData = { workbook: qbWb, sheet: qbSheet, headers: qbHeaders };
                 }
                 
-                // Validate mapping file if provided
-                if (mappingFileInput.files[0]) {
+                // Validate mapping file (REQUIRED)
+                if (!mappingFileInput.files[0]) {
+                    issues.push(createValidationItem('error', 'Name Mapping File Required', 'Please upload a mapping file to map contractor names between systems'));
+                    allValid = false;
+                } else {
                     log('Loading mapping file...', 'info');
                     const mappingFileName = mappingFileInput.files[0].name.toLowerCase();
                     
@@ -3889,6 +4458,16 @@
                 reconcileBtn.disabled = false;
                 showToast('Validation Complete', 'All files validated successfully!', 'success');
                 log('Validation passed', 'success');
+                
+                // Auto-run reconciliation if in auto mode
+                if (autoMode) {
+                    setTimeout(() => {
+                        navigateTo('reconcile');
+                        setTimeout(() => {
+                            runReconciliation();
+                        }, 300);
+                    }, 500);
+                }
             } else {
                 reconcileBtn.disabled = true;
                 showToast('Validation Failed', 'Please fix the errors above', 'error');
@@ -3898,6 +4477,27 @@
 
         // ===== RECONCILIATION =====
         reconcileBtn.addEventListener('click', runReconciliation);
+        
+        // Helper function to extract first name
+        function getFirstName(fullName) {
+            if (!fullName) return '';
+            return fullName.split(/[\s,]+/)[0].toLowerCase().trim();
+        }
+        
+        // Helper function to check if two names have similar first names
+        function hasSimilarFirstName(name1, name2) {
+            const first1 = getFirstName(name1);
+            const first2 = getFirstName(name2);
+            if (!first1 || !first2 || first1 === first2) return false;
+            // Check if first names start with the same 3+ characters
+            if (first1.length >= 3 && first2.length >= 3) {
+                return first1.substring(0, 3) === first2.substring(0, 3);
+            }
+            return false;
+        }
+        
+        // Store all QB payments globally for misattribution detection
+        let allQBPayments = [];
         
         async function runReconciliation() {
             document.getElementById('reconcileEmpty').style.display = 'none';
@@ -3964,6 +4564,10 @@
                 const qbAmountIdx = findColumnIndex(qbData.headers, EXPECTED_QB_COLUMNS['Paid Amount']);
                 
                 const qbByProvider = new Map();
+                allQBPayments = []; // Reset global QB payments list
+                
+                // First pass: collect all QB payments and detect duplicates
+                const qbPaymentSignatures = new Map(); // Track payment signatures for duplicate detection
                 
                 qbData.sheet.eachRow((row, rowNum) => {
                     if (rowNum === 1) return;
@@ -3977,10 +4581,25 @@
                     
                     if (!contractorName || !paymentDate) return;
                     
+                    const originalContractorName = contractorName;
                     const mappedName = mappingData[businessName.toLowerCase()] || mappingData[contractorName.toLowerCase()];
                     if (mappedName) contractorName = mappedName;
                     
                     const providerKey = contractorName.toLowerCase().trim();
+                    
+                    // Create a signature for duplicate detection (provider + date + amount)
+                    const dateStr = paymentDate.toISOString().split('T')[0];
+                    const signature = `${providerKey}|${dateStr}|${amount.toFixed(2)}`;
+                    
+                    // Check for duplicate
+                    let isDuplicate = false;
+                    let duplicateOf = null;
+                    if (qbPaymentSignatures.has(signature)) {
+                        isDuplicate = true;
+                        duplicateOf = qbPaymentSignatures.get(signature);
+                    } else {
+                        qbPaymentSignatures.set(signature, rowNum);
+                    }
                     
                     if (!qbByProvider.has(providerKey)) {
                         qbByProvider.set(providerKey, { contractorName, businessName, totalAmount: 0, payments: [] });
@@ -3988,10 +4607,28 @@
                     
                     const provider = qbByProvider.get(providerKey);
                     provider.totalAmount += amount;
-                    provider.payments.push({ date: paymentDate, amount, businessName, rowNum });
+                    
+                    const paymentRecord = { 
+                        date: paymentDate, 
+                        amount, 
+                        businessName, 
+                        rowNum,
+                        isDuplicate,
+                        duplicateOf,
+                        originalContractorName
+                    };
+                    
+                    provider.payments.push(paymentRecord);
+                    
+                    // Store in global list for misattribution detection
+                    allQBPayments.push({
+                        ...paymentRecord,
+                        providerKey,
+                        contractorName
+                    });
                 });
                 
-                updateProgress(70, 'Comparing records...');
+                updateProgress(70, 'Comparing records & detecting issues...');
                 
                 // Compare and build results
                 reconciliationResults = [];
@@ -4010,7 +4647,59 @@
                     const payrollPayments = payrollProvider ? Array.from(payrollProvider.payments.values()).sort((a, b) => (a.payrollDate || 0) - (b.payrollDate || 0)) : [];
                     const qbPayments = qbProvider ? qbProvider.payments.sort((a, b) => a.date - b.date) : [];
                     
+                    // Check for potential misattributions for unmatched payroll payments
+                    const potentialMisattributions = [];
+                    if (payrollProvider) {
+                        payrollPayments.forEach(payrollPmt => {
+                            if (!payrollPmt.expectedQBDate) return;
+                            
+                            // Check if this payroll payment has a match in QB
+                            const dateTolerance = 3;
+                            const hasQBMatch = qbPayments.some(qbPmt => {
+                                const daysDiff = Math.abs((qbPmt.date.getTime() - payrollPmt.expectedQBDate.getTime()) / (1000 * 60 * 60 * 24));
+                                return daysDiff <= dateTolerance && Math.abs(qbPmt.amount - payrollPmt.amount) < 0.01;
+                            });
+                            
+                            if (!hasQBMatch) {
+                                // Look for potential misattribution in other providers with similar first names
+                                const providerFirstName = getFirstName(payrollProvider.providerName);
+                                
+                                allQBPayments.forEach(qbPmt => {
+                                    if (qbPmt.providerKey === providerKey) return; // Skip same provider
+                                    
+                                    const qbFirstName = getFirstName(qbPmt.contractorName);
+                                    if (!qbFirstName || !providerFirstName) return;
+                                    
+                                    // Check if first names are similar (start with same 3 chars but not identical full names)
+                                    const similarFirstName = providerFirstName.length >= 3 && qbFirstName.length >= 3 &&
+                                        providerFirstName.substring(0, 3) === qbFirstName.substring(0, 3) &&
+                                        providerFirstName !== qbFirstName;
+                                    
+                                    if (similarFirstName) {
+                                        // Check if the amount and date match
+                                        const daysDiff = Math.abs((qbPmt.date.getTime() - payrollPmt.expectedQBDate.getTime()) / (1000 * 60 * 60 * 24));
+                                        if (daysDiff <= dateTolerance && Math.abs(qbPmt.amount - payrollPmt.amount) < 0.01) {
+                                            potentialMisattributions.push({
+                                                payrollPayment: payrollPmt,
+                                                suspectedQBPayment: qbPmt,
+                                                similarity: `Same first name prefix "${providerFirstName.substring(0, 3)}..."`,
+                                                missingProviderName: payrollProvider.providerName,
+                                                missingProviderKey: providerKey,
+                                                receivingProviderName: qbPmt.contractorName,
+                                                receivingProviderKey: qbPmt.providerKey
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    // Count duplicates
+                    const duplicateCount = qbPayments.filter(p => p.isDuplicate).length;
+                    
                     reconciliationResults.push({
+                        providerKey,
                         providerName: payrollProvider?.providerName || qbProvider?.contractorName,
                         businessName: qbProvider?.businessName || null,
                         payrollTotal,
@@ -4018,15 +4707,73 @@
                         difference,
                         status: !payrollProvider ? 'missing_payroll' : !qbProvider ? 'missing_qb' : 'mismatch',
                         payrollPayments,
-                        qbPayments
+                        qbPayments,
+                        potentialMisattributions,
+                        duplicateCount,
+                        receivedMisattributions: [], // Will be populated in second pass
+                        equalOppositePairs: [] // Will be populated in second pass
                     });
                 }
+                
+                // SECOND PASS: Cross-reference misattributions to receiving providers
+                // and detect equal/opposite discrepancy pairs
+                reconciliationResults.forEach(result => {
+                    // Find misattributions that were attributed TO this provider
+                    reconciliationResults.forEach(otherResult => {
+                        if (otherResult.providerKey === result.providerKey) return;
+                        
+                        otherResult.potentialMisattributions?.forEach(ma => {
+                            if (ma.receivingProviderKey === result.providerKey) {
+                                result.receivedMisattributions.push({
+                                    ...ma,
+                                    fromProviderName: otherResult.providerName
+                                });
+                            }
+                        });
+                    });
+                    
+                    // Find equal and opposite discrepancy pairs
+                    reconciliationResults.forEach(otherResult => {
+                        if (otherResult.providerKey === result.providerKey) return;
+                        if (result.equalOppositePairs.some(p => p.providerKey === otherResult.providerKey)) return;
+                        if (otherResult.equalOppositePairs.some(p => p.providerKey === result.providerKey)) return;
+                        
+                        // Check if differences are equal and opposite (within $0.01 tolerance)
+                        const sumOfDiffs = result.difference + otherResult.difference;
+                        if (Math.abs(sumOfDiffs) < 0.02 && Math.abs(result.difference) > 0.01) {
+                            result.equalOppositePairs.push({
+                                providerKey: otherResult.providerKey,
+                                providerName: otherResult.providerName,
+                                difference: otherResult.difference
+                            });
+                            otherResult.equalOppositePairs.push({
+                                providerKey: result.providerKey,
+                                providerName: result.providerName,
+                                difference: result.difference
+                            });
+                        }
+                    });
+                });
                 
                 reconciliationResults.sort((a, b) => Math.abs(b.difference) - Math.abs(a.difference));
                 
                 updateProgress(90, 'Generating reports...');
                 
+                // Count issues for logging
+                const totalDuplicates = reconciliationResults.reduce((sum, r) => sum + (r.duplicateCount || 0), 0);
+                const totalMisattributions = reconciliationResults.reduce((sum, r) => sum + (r.potentialMisattributions?.length || 0), 0);
+                const totalEqualOpposite = reconciliationResults.filter(r => r.equalOppositePairs?.length > 0).length / 2; // Divide by 2 since each pair is counted twice
+                
                 log(`Found ${reconciliationResults.length} providers with discrepancies`, 'success');
+                if (totalDuplicates > 0) {
+                    log(`⚠️ Detected ${totalDuplicates} potential duplicate QB entries`, 'warning');
+                }
+                if (totalMisattributions > 0) {
+                    log(`🔍 Found ${totalMisattributions} potential misattributions`, 'warning');
+                }
+                if (totalEqualOpposite > 0) {
+                    log(`⚖️ Found ${Math.round(totalEqualOpposite)} equal/opposite discrepancy pairs`, 'warning');
+                }
                 
                 updateProgress(100, 'Complete!');
                 
@@ -4096,11 +4843,64 @@
                 missingPayroll: reconciliationResults.filter(r => r.status === 'missing_payroll').length,
                 totalPayroll: reconciliationResults.reduce((s, r) => s + r.payrollTotal, 0),
                 totalQB: reconciliationResults.reduce((s, r) => s + r.qbTotal, 0),
-                totalDiff: reconciliationResults.reduce((s, r) => s + r.difference, 0)
+                totalDiff: reconciliationResults.reduce((s, r) => s + r.difference, 0),
+                duplicates: reconciliationResults.reduce((s, r) => s + (r.duplicateCount || 0), 0),
+                misattributions: reconciliationResults.reduce((s, r) => s + (r.potentialMisattributions?.length || 0), 0),
+                equalOppositePairs: Math.round(reconciliationResults.filter(r => r.equalOppositePairs?.length > 0).length / 2) // Divide by 2 since pairs are counted twice
             };
+            
+            // Build smart issues alert if any
+            let smartIssuesHtml = '';
+            if (stats.duplicates > 0 || stats.misattributions > 0 || stats.equalOppositePairs > 0) {
+                smartIssuesHtml = `
+                    <div class="card" style="margin-bottom: 1.5rem; border: 2px solid var(--warning-color); background: linear-gradient(135deg, var(--warning-bg) 0%, var(--bg-secondary) 100%);">
+                        <div class="card-body" style="padding: 1.25rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 40px; height: 40px; background: var(--warning-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="22" height="22" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1rem;">🔍 Smart Issue Detection</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Potential QB entry errors identified</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                ${stats.duplicates > 0 ? `
+                                    <div style="flex: 1; min-width: 200px; padding: 1rem; background: var(--error-bg); border: 1px solid var(--error-color); border-radius: var(--radius-md);">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                            <span style="font-size: 1.25rem;">📋</span>
+                                            <span style="font-weight: 700; color: var(--error-color);">${stats.duplicates} Potential Duplicate${stats.duplicates > 1 ? 's' : ''}</span>
+                                        </div>
+                                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Same provider paid twice on the same date with the same amount. Check the Detailed View for specifics.</p>
+                                    </div>
+                                ` : ''}
+                                ${stats.misattributions > 0 ? `
+                                    <div style="flex: 1; min-width: 200px; padding: 1rem; background: var(--purple-bg); border: 1px solid var(--purple-color); border-radius: var(--radius-md);">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                            <span style="font-size: 1.25rem;">🔀</span>
+                                            <span style="font-weight: 700; color: var(--purple-color);">${stats.misattributions} Possible Misattribution${stats.misattributions > 1 ? 's' : ''}</span>
+                                        </div>
+                                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Payments may have been entered under the wrong provider (similar names). Expand rows in Detailed View for suggestions.</p>
+                                    </div>
+                                ` : ''}
+                                ${stats.equalOppositePairs > 0 ? `
+                                    <div style="flex: 1; min-width: 200px; padding: 1rem; background: var(--info-bg); border: 1px solid var(--info-color); border-radius: var(--radius-md);">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                            <span style="font-size: 1.25rem;">⚖️</span>
+                                            <span style="font-weight: 700; color: var(--info-color);">${stats.equalOppositePairs} Equal/Opposite Pair${stats.equalOppositePairs > 1 ? 's' : ''}</span>
+                                        </div>
+                                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Two providers have exactly opposite discrepancies (e.g., +$200 and -$200). Payments may have been swapped.</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
             
             const dashboardContent = document.getElementById('dashboardContent');
             dashboardContent.innerHTML = `
+                ${smartIssuesHtml}
                 <div class="stats-grid">
                     <div class="stat-card warning">
                         <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
@@ -4176,7 +4976,7 @@
                         <div class="insight-content">
                             <div class="insight-title">Resolution Priority</div>
                             <div class="insight-desc">Based on impact analysis</div>
-                            <div class="insight-value" style="color: var(--info-color);">${stats.missingQB > stats.mismatches ? 'Missing Records' : 'Amount Mismatches'}</div>
+                            <div class="insight-value" style="color: var(--info-color);">${stats.duplicates > 0 ? 'Check Duplicates' : (stats.missingQB > stats.mismatches ? 'Missing Records' : 'Amount Mismatches')}</div>
                         </div>
                     </div>
                     <div class="insight-card">
@@ -4361,19 +5161,20 @@
             const dateTolerance = 3;
             const matchedQBPayments = new Set();
             
-            let html = `
-                <div class="detail-header">
-                    <div class="detail-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Weekly Payment Comparison</div>
-                </div>
-                <table class="weekly-table">
-                    <colgroup>
-                        <col style="width: 20%;"><col style="width: 10%;"><col style="width: 12%;"><col style="width: 14%;"><col style="width: 14%;"><col style="width: 12%;"><col style="width: 10%;"><col style="width: 8%;">
-                    </colgroup>
-                    <thead><tr>
-                        <th>Payroll Source</th><th>Payroll Date</th><th>Expected QB</th><th class="amount amount-payroll">Payroll Amt</th><th class="qb-date">QB Date</th><th class="amount">QB Amt</th><th class="amount">Diff</th><th>Status</th>
-                    </tr></thead><tbody>
-            `;
+            // Build misattribution lookup for this provider
+            const misattributionsByPayroll = new Map();
+            if (result.potentialMisattributions) {
+                result.potentialMisattributions.forEach(ma => {
+                    const key = `${ma.payrollPayment.sourceName}|${ma.payrollPayment.amount}`;
+                    if (!misattributionsByPayroll.has(key)) {
+                        misattributionsByPayroll.set(key, []);
+                    }
+                    misattributionsByPayroll.get(key).push(ma);
+                });
+            }
             
+            // First pass: match payroll payments to QB payments
+            const payrollRows = [];
             result.payrollPayments.forEach(payrollPmt => {
                 let matchedQB = null;
                 let matchedIdx = -1;
@@ -4393,30 +5194,178 @@
                 
                 const difference = payrollPmt.amount - (matchedQB ? matchedQB.amount : 0);
                 const isMatch = matchedQB && Math.abs(difference) < 0.01;
-                const statusClass = isMatch ? 'match' : (matchedQB ? 'mismatch' : 'missing');
-                const statusLabel = isMatch ? '✓' : (matchedQB ? '⚠' : '✗');
+                let statusClass = isMatch ? 'match' : (matchedQB ? 'mismatch' : 'missing');
+                let statusLabel = isMatch ? '✓' : (matchedQB ? '⚠' : '✗');
                 
-                html += `<tr class="${statusClass}">
-                    <td style="font-size: 0.75rem;">${payrollPmt.sourceName || 'N/A'}</td>
-                    <td>${formatDate(payrollPmt.payrollDate)}</td>
-                    <td>${formatDate(payrollPmt.expectedQBDate)}</td>
-                    <td class="amount amount-payroll">${formatCurrency(payrollPmt.amount)}</td>
-                    <td class="qb-date">${matchedQB ? formatDate(matchedQB.date) : '—'}</td>
-                    <td class="amount">${matchedQB ? formatCurrency(matchedQB.amount) : '—'}</td>
-                    <td class="amount" style="${Math.abs(difference) > 0.01 ? 'color: var(--warning-color); font-weight: 600;' : ''}">${formatCurrency(difference)}</td>
-                    <td><span class="mini-badge ${statusClass}">${statusLabel}</span></td>
-                </tr>`;
+                // Check for potential misattribution
+                const maKey = `${payrollPmt.sourceName}|${payrollPmt.amount}`;
+                const misattributions = misattributionsByPayroll.get(maKey);
+                let misattributionHtml = '';
+                if (misattributions && misattributions.length > 0 && !matchedQB) {
+                    statusClass = 'misattribution';
+                    statusLabel = '🔀';
+                    const ma = misattributions[0];
+                    misattributionHtml = `
+                        <div class="issue-alert misattribution-alert" style="margin-top: 0.5rem; padding: 0.5rem; background: var(--purple-bg); border: 1px solid var(--purple-color); border-radius: var(--radius-sm); font-size: 0.75rem;">
+                            <strong style="color: var(--purple-color);">🔀 Possible Misattribution:</strong><br>
+                            Found matching payment under <strong>${ma.suspectedQBPayment.contractorName}</strong><br>
+                            ${formatCurrency(ma.suspectedQBPayment.amount)} on ${formatDate(ma.suspectedQBPayment.date)}
+                        </div>
+                    `;
+                }
+                
+                // Use expectedQBDate for sorting (or payrollDate if no expected date)
+                const sortDate = payrollPmt.expectedQBDate || payrollPmt.payrollDate;
+                
+                payrollRows.push({
+                    sortDate: sortDate,
+                    type: 'payroll',
+                    html: `<tr class="${statusClass}">
+                        <td style="font-size: 0.75rem;">${payrollPmt.sourceName || 'N/A'}${misattributionHtml}</td>
+                        <td>${formatDate(payrollPmt.payrollDate)}</td>
+                        <td>${formatDate(payrollPmt.expectedQBDate)}</td>
+                        <td class="amount amount-payroll">${formatCurrency(payrollPmt.amount)}</td>
+                        <td class="qb-date">${matchedQB ? formatDate(matchedQB.date) : '—'}</td>
+                        <td class="amount">${matchedQB ? formatCurrency(matchedQB.amount) : '—'}</td>
+                        <td class="amount" style="${Math.abs(difference) > 0.01 ? 'color: var(--warning-color); font-weight: 600;' : ''}">${formatCurrency(difference)}</td>
+                        <td><span class="mini-badge ${statusClass}">${statusLabel}</span></td>
+                    </tr>`
+                });
             });
             
+            // Second pass: collect unmatched QB payments
+            const unmatchedQBRows = [];
             result.qbPayments.forEach((qbPmt, idx) => {
                 if (matchedQBPayments.has(idx)) return;
-                html += `<tr class="missing">
-                    <td>—</td><td>—</td><td>—</td><td class="amount amount-payroll">—</td>
-                    <td class="qb-date">${formatDate(qbPmt.date)}</td>
-                    <td class="amount">${formatCurrency(qbPmt.amount)}</td>
-                    <td class="amount" style="color: var(--error-color); font-weight: 600;">${formatCurrency(-qbPmt.amount)}</td>
-                    <td><span class="mini-badge missing">✗</span></td>
-                </tr>`;
+                
+                // Check if this is a duplicate
+                let duplicateHtml = '';
+                let statusClass = 'missing';
+                let statusLabel = '✗';
+                
+                if (qbPmt.isDuplicate) {
+                    statusClass = 'duplicate';
+                    statusLabel = '📋';
+                    duplicateHtml = `
+                        <div class="issue-alert duplicate-alert" style="margin-top: 0.5rem; padding: 0.5rem; background: var(--error-bg); border: 1px solid var(--error-color); border-radius: var(--radius-sm); font-size: 0.75rem;">
+                            <strong style="color: var(--error-color);">📋 Potential Duplicate:</strong><br>
+                            Same provider, date & amount as Row ${qbPmt.duplicateOf}
+                        </div>
+                    `;
+                }
+                
+                unmatchedQBRows.push({
+                    sortDate: qbPmt.date,
+                    type: 'qb',
+                    html: `<tr class="${statusClass}">
+                        <td>—${duplicateHtml}</td><td>—</td><td>—</td><td class="amount amount-payroll">—</td>
+                        <td class="qb-date">${formatDate(qbPmt.date)}</td>
+                        <td class="amount">${formatCurrency(qbPmt.amount)}</td>
+                        <td class="amount" style="color: var(--error-color); font-weight: 600;">${formatCurrency(-qbPmt.amount)}</td>
+                        <td><span class="mini-badge ${statusClass}">${statusLabel}</span></td>
+                    </tr>`
+                });
+            });
+            
+            // Merge and sort all rows by date
+            const allRows = [...payrollRows, ...unmatchedQBRows];
+            allRows.sort((a, b) => {
+                if (!a.sortDate && !b.sortDate) return 0;
+                if (!a.sortDate) return 1;
+                if (!b.sortDate) return -1;
+                return a.sortDate.getTime() - b.sortDate.getTime();
+            });
+            
+            // Build header with issue summary if any
+            let issuesSummary = '';
+            const duplicateCount = result.duplicateCount || 0;
+            const misattributionCount = result.potentialMisattributions?.length || 0;
+            const receivedMisattributionCount = result.receivedMisattributions?.length || 0;
+            const equalOppositeCount = result.equalOppositePairs?.length || 0;
+            
+            if (duplicateCount > 0 || misattributionCount > 0 || receivedMisattributionCount > 0 || equalOppositeCount > 0) {
+                issuesSummary = `<div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">`;
+                
+                // Badge row
+                issuesSummary += `<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">`;
+                if (duplicateCount > 0) {
+                    issuesSummary += `<div style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem; background: var(--error-bg); border: 1px solid var(--error-color); border-radius: var(--radius-md); font-size: 0.8rem; color: var(--error-color);">
+                        <span>📋</span> ${duplicateCount} Potential Duplicate${duplicateCount > 1 ? 's' : ''}
+                    </div>`;
+                }
+                if (misattributionCount > 0) {
+                    issuesSummary += `<div style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem; background: var(--purple-bg); border: 1px solid var(--purple-color); border-radius: var(--radius-md); font-size: 0.8rem; color: var(--purple-color);">
+                        <span>🔀</span> ${misattributionCount} Payment${misattributionCount > 1 ? 's' : ''} May Be Under Wrong Provider
+                    </div>`;
+                }
+                if (receivedMisattributionCount > 0) {
+                    issuesSummary += `<div style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem; background: var(--warning-bg); border: 1px solid var(--warning-color); border-radius: var(--radius-md); font-size: 0.8rem; color: var(--warning-color);">
+                        <span>📥</span> ${receivedMisattributionCount} Payment${receivedMisattributionCount > 1 ? 's' : ''} May Belong to Someone Else
+                    </div>`;
+                }
+                if (equalOppositeCount > 0) {
+                    issuesSummary += `<div style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem; background: var(--info-bg); border: 1px solid var(--info-color); border-radius: var(--radius-md); font-size: 0.8rem; color: var(--info-color);">
+                        <span>⚖️</span> Equal/Opposite Discrepancy Detected
+                    </div>`;
+                }
+                issuesSummary += `</div>`;
+                
+                // Detailed alerts for received misattributions
+                if (receivedMisattributionCount > 0) {
+                    issuesSummary += `<div style="padding: 0.75rem; background: var(--warning-bg); border: 1px solid var(--warning-color); border-radius: var(--radius-md);">
+                        <div style="font-weight: 600; color: var(--warning-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>📥</span> This Provider May Have Received Payments Meant for Others:
+                        </div>
+                        <ul style="margin: 0; padding-left: 1.5rem; font-size: 0.8rem; color: var(--text-secondary);">`;
+                    result.receivedMisattributions.forEach(rma => {
+                        issuesSummary += `<li style="margin-bottom: 0.25rem;">
+                            <strong>${formatCurrency(rma.suspectedQBPayment.amount)}</strong> on ${formatDate(rma.suspectedQBPayment.date)} 
+                            may belong to <strong style="color: var(--warning-color);">${rma.fromProviderName}</strong>
+                        </li>`;
+                    });
+                    issuesSummary += `</ul></div>`;
+                }
+                
+                // Detailed alerts for equal/opposite pairs
+                if (equalOppositeCount > 0) {
+                    issuesSummary += `<div style="padding: 0.75rem; background: var(--info-bg); border: 1px solid var(--info-color); border-radius: var(--radius-md);">
+                        <div style="font-weight: 600; color: var(--info-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>⚖️</span> Equal & Opposite Discrepancy - Possible Swap:
+                        </div>
+                        <ul style="margin: 0; padding-left: 1.5rem; font-size: 0.8rem; color: var(--text-secondary);">`;
+                    result.equalOppositePairs.forEach(pair => {
+                        const thisSign = result.difference > 0 ? 'overpaid' : 'underpaid';
+                        const otherSign = pair.difference > 0 ? 'overpaid' : 'underpaid';
+                        issuesSummary += `<li style="margin-bottom: 0.25rem;">
+                            This provider is <strong style="color: ${result.difference > 0 ? 'var(--warning-color)' : 'var(--error-color)'};">${thisSign} by ${formatCurrency(Math.abs(result.difference))}</strong>, 
+                            while <strong style="color: var(--info-color);">${pair.providerName}</strong> is 
+                            <strong style="color: ${pair.difference > 0 ? 'var(--warning-color)' : 'var(--error-color)'};">${otherSign} by ${formatCurrency(Math.abs(pair.difference))}</strong>
+                            — payments may have been swapped
+                        </li>`;
+                    });
+                    issuesSummary += `</ul></div>`;
+                }
+                
+                issuesSummary += `</div>`;
+            }
+            
+            let html = `
+                <div class="detail-header">
+                    <div class="detail-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Weekly Payment Comparison</div>
+                </div>
+                ${issuesSummary}
+                <table class="weekly-table">
+                    <colgroup>
+                        <col style="width: 20%;"><col style="width: 10%;"><col style="width: 12%;"><col style="width: 14%;"><col style="width: 14%;"><col style="width: 12%;"><col style="width: 10%;"><col style="width: 8%;">
+                    </colgroup>
+                    <thead><tr>
+                        <th>Payroll Source</th><th>Payroll Date</th><th>Expected QB</th><th class="amount amount-payroll">Payroll Amt</th><th class="qb-date">QB Date</th><th class="amount">QB Amt</th><th class="amount">Diff</th><th>Status</th>
+                    </tr></thead><tbody>
+            `;
+            
+            // Render all rows in date order
+            allRows.forEach(row => {
+                html += row.html;
             });
             
             html += `</tbody><tfoot><tr>
